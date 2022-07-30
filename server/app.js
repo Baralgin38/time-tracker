@@ -7,6 +7,9 @@ const PORT = config.get("port") ?? 8080;
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.listen(8080, () =>
   console.log(chalk.green(`Server has been started on port ${PORT}`))
 );
