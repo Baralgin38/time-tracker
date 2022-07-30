@@ -4,8 +4,18 @@
   "description": "Diploma project, an application for tracking the time spent on any projects / tasks",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "author": "Bonch <baralgin38@yandex.ru>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "config": "^3.3.7",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
