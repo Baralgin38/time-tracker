@@ -4,8 +4,8 @@
   "description": "Diploma project, an application for tracking the time spent on any projects / tasks",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "serve": "nodemon app.js"
+    "start": "cross-env NODE_ENV=production node app.js",
+    "serve": "cross-env NODE_ENV=development nodemon app.js"
   },
   "author": "Bonch <baralgin38@yandex.ru>",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "mongoose": "^6.5.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.19"
   }
 }
