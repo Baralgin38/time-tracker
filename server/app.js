@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 async function start() {
   try {
     mongoose.connect(config.get("MongoUri"));
+    console.log(chalk.green("MongoDB connected."));
     app.listen(8080, () =>
       console.log(chalk.green(`Server has been started on port ${PORT}`))
     );
