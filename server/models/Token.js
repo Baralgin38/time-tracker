@@ -8,4 +8,4 @@ const schema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model("Project", schema);
+module.exports = model("Token", schema);
