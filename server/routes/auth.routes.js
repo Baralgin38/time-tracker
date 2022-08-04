@@ -5,12 +5,6 @@ const bcrypt = require("bcryptjs");
 const tokenService = require("../services/token.service");
 const { check, validationResult } = require("express-validator");
 
-check("name", "Имя не может быть меньше 2 символов").isLength({ min: 2 });
-check("email", "Некорректный email").isEmail();
-check("password", "Минимальная длинна пароля должна быть 8 символов").isLength({
-  min: 8,
-});
-
 router.post("/signUp", [
   check("name", "Имя не может быть меньше 2 символов").isLength({ min: 2 }),
   check("email", "Некорректный email").isEmail(),
@@ -65,7 +59,61 @@ router.post("/signUp", [
   },
 ]);
 
-router.post("/signInWithPassword", async (req, res) => {});
+router.post("/signInWithPassword", [
+  check("email", "Email введен некорректно").normalizeEmail().isEmail(),
+  check("password", "Пароль не должен быть пустым").exists(),
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          error: {
+            message: "INVALID_DATA",
+            code: 400,
+            errors: errors.array(),
+          },
+        });
+      }
+
+      const { email, password } = req.body;
+
+      const existingUser = await User.findOne({ email });
+
+      if (!existingUser) {
+        return res.status(400).send({
+          error: {
+            message: "EMAIL_NOT_FOUND",
+            code: 400,
+          },
+        });
+      }
+
+      const isPasswordEqual = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
+      if (!isPasswordEqual) {
+        return res.status(400).send({
+          error: {
+            message: "INVALID_PASSWORD",
+            code: 400,
+          },
+        });
+      }
+
+      const tokens = tokenService.generate({ _id: existingUser._id });
+      await tokenService.save(existingUser._id, tokens.refreshToken);
+
+      res.status(200).send({ ...tokens, userId: existingUser._id });
+    } catch (error) {
+      res.status(500).json({
+        message: "На сервере произошла ошибка, попробуйте позже.",
+      });
+    }
+  },
+]);
 
 router.post("/token", async (req, res) => {});
 
