@@ -4,7 +4,6 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const tokenService = require("../services/token.service");
 const { check, validationResult } = require("express-validator");
-const Token = require("../models/Token");
 
 router.post("/signUp", [
   check("name", "Имя не может быть меньше 2 символов").isLength({ min: 2 }),
