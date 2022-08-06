@@ -5,6 +5,7 @@ const schema = new Schema(
     title: { type: String, required: true },
     content: { type: String },
     createdAt: { type: String },
+    projectId: { type: Schema.Types.ObjectId, ref: "Project", required: true },
   },
   { timestamps: true }
 );
